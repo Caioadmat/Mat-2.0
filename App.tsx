@@ -145,7 +145,7 @@ const App: React.FC = () => {
                         <span className="hidden sm:inline">Links Úteis</span>
                      </button>
                      {isLinksOpen && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-xl z-10 border border-gray-200 dark:border-gray-700 py-1">
+                        <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-xl z-10 border border-gray-200 dark:border-gray-700 py-1">
                              <a 
                                 href="https://sigaa.ufpb.br/sigaa/public/home.jsf" 
                                 target="_blank" 
@@ -154,6 +154,15 @@ const App: React.FC = () => {
                                 aria-label="Acessar o portal SIGAA"
                              >
                                 Portal SIGAA
+                             </a>
+                             <a 
+                                href="https://atendimento.ct.ufpb.br/index.php?a=add&catid=24" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                aria-label="Acessar o portal de atendimento da coordenação"
+                             >
+                                Atendimento Coordenação
                              </a>
                              <a 
                                 href="https://sigeventos.ufpb.br/eventos/login.xhtml" 
