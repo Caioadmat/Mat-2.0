@@ -1,0 +1,7 @@
+{
+  "name": "Mat - Assistente Virtual",
+  "description": "Mat, o assistente virtual para os alunos de Engenharia de Materiais da UFPB, criado pelo Centro Acadêmico.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
