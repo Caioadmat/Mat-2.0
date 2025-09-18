@@ -56,3 +56,12 @@ declare global {
     webkitSpeechRecognition: new () => SpeechRecognition;
   }
 }
+
+// New types for added features
+export interface Lab {
+  id: string;
+  name: string;
+  professors: string[];
+  description: string;
+  researchLines: string[];
+}

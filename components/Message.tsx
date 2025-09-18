@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Message as MessageType } from '../types';
-import { UserIcon, MatIcon, ThumbsUpIcon, ThumbsDownIcon, CopyIcon, SpeakerIcon } from './Icon';
+import { UserIcon, MatIcon, ThumbsUpIcon, ThumbsDownIcon, CopyIcon, SpeakerIcon, ExportIcon, ShareIcon } from './Icon';
 
 interface MessageProps {
   message: MessageType;
@@ -11,6 +11,8 @@ interface MessageProps {
   onFeedback: (messageId: number, feedback: 'up' | 'down') => void;
   onCopy: (text: string) => void;
   onSpeak: (text: string) => void;
+  onExport: (text: string) => void;
+  onShare: (text: string) => void;
 }
 
 const LoadingIndicator: React.FC = () => (
@@ -25,13 +27,27 @@ const TypingCursor: React.FC = () => (
   <span className="w-3 h-5 bg-gray-800 dark:bg-gray-200 inline-block ml-1 animate-pulse"></span>
 );
 
-const MessageActions: React.FC<{ message: MessageType, onFeedback: MessageProps['onFeedback'], onCopy: MessageProps['onCopy'], onSpeak: MessageProps['onSpeak'] }> = ({ message, onFeedback, onCopy, onSpeak }) => {
-    const [copied, setCopied] = useState(false);
+const MessageActions: React.FC<{ message: MessageType, onFeedback: MessageProps['onFeedback'], onCopy: MessageProps['onCopy'], onSpeak: MessageProps['onSpeak'], onExport: MessageProps['onExport'], onShare: MessageProps['onShare'] }> = ({ message, onFeedback, onCopy, onSpeak, onExport, onShare }) => {
+    const [tooltipText, setTooltipText] = useState<string | null>(null);
+
+    const showTooltip = (text: string) => {
+        setTooltipText(text);
+        setTimeout(() => setTooltipText(null), 2000);
+    };
 
     const handleCopyClick = () => {
         onCopy(message.content);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        showTooltip('Copiado!');
+    };
+    
+    const handleShareClick = () => {
+        onShare(message.content);
+        showTooltip('Pronto para colar!');
+    };
+    
+    const handleExportClick = () => {
+        onExport(message.content);
+        showTooltip('Baixando...');
     };
 
     const hasFeedback = message.feedback === 'up' || message.feedback === 'down';
@@ -45,16 +61,24 @@ const MessageActions: React.FC<{ message: MessageType, onFeedback: MessageProps[
                 }
                 .animate-fade-in-up-subtle { animation: fade-in-up-subtle 0.3s ease-out forwards; }
             `}</style>
+            
             <div className="relative">
+                {tooltipText && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800 text-xs font-semibold rounded-md shadow-lg animate-fade-in-up-subtle whitespace-nowrap pointer-events-none">
+                        {tooltipText}
+                    </div>
+                )}
                 <button onClick={handleCopyClick} className="p-1 hover:text-gray-900 dark:hover:text-gray-100 transition-colors" aria-label="Copiar mensagem">
                     <CopyIcon className="w-4 h-4" />
                 </button>
-                 {copied && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800 text-xs font-semibold rounded-md shadow-lg animate-fade-in-up-subtle whitespace-nowrap pointer-events-none">
-                        Copiado!
-                    </div>
-                )}
             </div>
+             <button onClick={handleShareClick} className="p-1 hover:text-gray-900 dark:hover:text-gray-100 transition-colors" aria-label="Compartilhar">
+                <ShareIcon className="w-4 h-4" />
+            </button>
+            <button onClick={handleExportClick} className="p-1 hover:text-gray-900 dark:hover:text-gray-100 transition-colors" aria-label="Exportar como .txt">
+                <ExportIcon className="w-4 h-4" />
+            </button>
+            <div className="border-l h-4 border-gray-300 dark:border-gray-600 mx-1"></div>
             <button
                 onClick={() => onFeedback(message.id, 'up')}
                 className={`p-1 transition-colors ${message.feedback === 'up' ? 'text-blue-600 dark:text-blue-500' : 'hover:text-blue-600 dark:hover:text-blue-500'} disabled:text-gray-400 dark:disabled:text-gray-500 disabled:hover:text-gray-400`}
@@ -76,7 +100,7 @@ const MessageActions: React.FC<{ message: MessageType, onFeedback: MessageProps[
     );
 };
 
-const MessageComponent: React.FC<MessageProps> = ({ message, isLastMessage, isLoading, onFeedback, onCopy, onSpeak }) => {
+const MessageComponent: React.FC<MessageProps> = ({ message, isLastMessage, isLoading, onFeedback, onCopy, onSpeak, onExport, onShare }) => {
   const { role, content } = message;
   const isUser = role === 'user';
   const isTyping = content === 'loading';
@@ -116,7 +140,7 @@ const MessageComponent: React.FC<MessageProps> = ({ message, isLastMessage, isLo
              {isLastMessage && isLoading && <TypingCursor />}
           </div>
         )}
-        {!isUser && !isTyping && content && <MessageActions message={message} onFeedback={onFeedback} onCopy={onCopy} onSpeak={onSpeak} />}
+        {!isUser && !isTyping && content && <MessageActions message={message} onFeedback={onFeedback} onCopy={onCopy} onSpeak={onSpeak} onExport={onExport} onShare={onShare} />}
       </div>
     </div>
   );

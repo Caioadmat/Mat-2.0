@@ -74,9 +74,11 @@ interface ChatWindowProps {
   onFeedback: (messageId: number, feedback: 'up' | 'down') => void;
   onCopy: (text: string) => void;
   onSpeak: (text: string) => void;
+  onExport: (text: string) => void;
+  onShare: (text: string) => void;
 }
 
-export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading, onSendMessage, onFeedback, onCopy, onSpeak }) => {
+export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading, onSendMessage, onFeedback, onCopy, onSpeak, onExport, onShare }) => {
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -100,6 +102,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading, onS
                         onFeedback={onFeedback}
                         onCopy={onCopy}
                         onSpeak={onSpeak}
+                        onExport={onExport}
+                        onShare={onShare}
                     />
                 ))}
             </div>

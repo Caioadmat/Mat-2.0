@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MAT_PERSONA } from './constants';
 import { ChatWindow } from './components/ChatWindow';
 import { InputBar } from './components/InputBar';
-import { MatIcon, SettingsIcon, TrashIcon, FlowchartIcon, LinkIcon, SunIcon, MoonIcon, WhatsAppIcon, AcademicCapIcon } from './components/Icon';
+import { MatIcon, SettingsIcon, TrashIcon, FlowchartIcon, LinkIcon, SunIcon, MoonIcon, WhatsAppIcon, AcademicCapIcon, CalculatorIcon, FlaskIcon } from './components/Icon';
 import { useChat } from './hooks/useChat';
 import { useSpeechRecognition } from './hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from './hooks/useSpeechSynthesis';
 import { FlowchartModal } from './components/FlowchartModal';
 import { FreshmanGuideModal } from './components/FreshmanGuideModal';
+import { CRAACalculatorModal } from './components/CRAACalculatorModal';
+import { LabsGuideModal } from './components/LabsGuideModal';
 
 const ApiKeyErrorScreen: React.FC = () => (
     <div className="h-screen w-screen flex flex-col items-center justify-center font-sans bg-red-50 text-red-800 p-4">
@@ -37,6 +39,8 @@ const App: React.FC = () => {
     const [isLinksOpen, setIsLinksOpen] = useState(false);
     const [isFlowchartVisible, setIsFlowchartVisible] = useState(false);
     const [isFreshmanGuideVisible, setIsFreshmanGuideVisible] = useState(false);
+    const [isCRAACalcVisible, setIsCRAACalcVisible] = useState(false);
+    const [isLabsGuideVisible, setIsLabsGuideVisible] = useState(false);
     const [theme, setTheme] = useState<Theme>('light');
 
     const settingsRef = useRef<HTMLDivElement>(null);
@@ -101,6 +105,23 @@ const App: React.FC = () => {
         navigator.clipboard.writeText(text).catch(err => console.error('Failed to copy text: ', err));
     }, []);
 
+    const handleShare = useCallback((text: string) => {
+        navigator.clipboard.writeText(text).catch(err => console.error('Failed to share text: ', err));
+    }, []);
+
+    const handleExport = useCallback((text: string) => {
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'resposta-mat.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }, []);
+
+
     return (
         <div className="h-screen w-screen flex flex-col font-sans text-gray-800 dark:text-gray-200 bg-slate-50 dark:bg-gray-900">
             <header className="flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -108,10 +129,10 @@ const App: React.FC = () => {
                 <MatIcon className="w-8 h-8 text-gray-800 dark:text-gray-200" />
                 <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">{MAT_PERSONA.name}</h1>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 sm:space-x-2">
                  <button 
                     onClick={() => setIsFreshmanGuideVisible(true)}
-                    className="px-3 py-2 text-sm font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/50 dark:text-amber-300 dark:hover:bg-amber-900/80 rounded-lg transition-colors flex items-center space-x-1"
+                    className="p-2 sm:px-3 sm:py-2 text-sm font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/50 dark:text-amber-300 dark:hover:bg-amber-900/80 rounded-lg transition-colors flex items-center space-x-1"
                     aria-label="Ver Guia do Calouro"
                  >
                     <AcademicCapIcon className="w-5 h-5" />
@@ -119,30 +140,46 @@ const App: React.FC = () => {
                  </button>
                  <button 
                     onClick={() => setIsFlowchartVisible(true)}
-                    className="px-3 py-2 text-sm font-medium text-purple-700 bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/50 dark:text-purple-300 dark:hover:bg-purple-900/80 rounded-lg transition-colors flex items-center space-x-1"
+                    className="p-2 sm:px-3 sm:py-2 text-sm font-medium text-purple-700 bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/50 dark:text-purple-300 dark:hover:bg-purple-900/80 rounded-lg transition-colors flex items-center space-x-1"
                     aria-label="Ver fluxograma do curso"
                  >
                     <FlowchartIcon className="w-5 h-5" />
                     <span className="hidden sm:inline">Fluxograma</span>
                  </button>
+                 <button 
+                    onClick={() => setIsCRAACalcVisible(true)}
+                    className="p-2 sm:px-3 sm:py-2 text-sm font-medium text-cyan-700 bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900/50 dark:text-cyan-300 dark:hover:bg-cyan-900/80 rounded-lg transition-colors flex items-center space-x-1"
+                    aria-label="Calculadora de CRA"
+                 >
+                    <CalculatorIcon className="w-5 h-5" />
+                    <span className="hidden sm:inline">CAL. CRA</span>
+                 </button>
+                  <button 
+                    onClick={() => setIsLabsGuideVisible(true)}
+                    className="p-2 sm:px-3 sm:py-2 text-sm font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:hover:bg-indigo-900/80 rounded-lg transition-colors flex items-center space-x-1"
+                    aria-label="Guia de Laboratórios"
+                 >
+                    <FlaskIcon className="w-5 h-5" />
+                    <span className="hidden sm:inline">LAB</span>
+                 </button>
                  <a 
                     href="https://chat.whatsapp.com/IoEhJ15LwCEK8UTWtRNViG"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-2 text-sm font-medium text-green-700 bg-green-100 hover:bg-green-200 dark:bg-green-900/50 dark:text-green-300 dark:hover:bg-green-900/80 rounded-lg transition-colors flex items-center space-x-1"
+                    className="p-2 sm:px-3 sm:py-2 text-sm font-medium text-green-700 bg-green-100 hover:bg-green-200 dark:bg-green-900/50 dark:text-green-300 dark:hover:bg-green-900/80 rounded-lg transition-colors flex items-center space-x-1"
                     aria-label="Entrar no grupo do WhatsApp"
                  >
                     <WhatsAppIcon className="w-5 h-5" />
-                    <span className="hidden sm:inline">Grupo Eng. Mat.</span>
+                    <span className="hidden sm:inline">GP. WPP Eng. Mat.</span>
                  </a>
                  <div className="relative" ref={linksRef}>
                      <button
                         onClick={() => setIsLinksOpen(prev => !prev)}
-                        className="px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/50 dark:text-blue-300 dark:hover:bg-blue-900/80 rounded-lg transition-colors flex items-center space-x-1"
+                        className="p-2 sm:px-3 sm:py-2 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/50 dark:text-blue-300 dark:hover:bg-blue-900/80 rounded-lg transition-colors flex items-center space-x-1"
                         aria-label="Links úteis"
                      >
                         <LinkIcon className="w-5 h-5" />
-                        <span className="hidden sm:inline">Links Úteis</span>
+                        <span className="hidden sm:inline">Links</span>
                      </button>
                      {isLinksOpen && (
                         <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-xl z-10 border border-gray-200 dark:border-gray-700 py-1">
@@ -154,6 +191,15 @@ const App: React.FC = () => {
                                 aria-label="Acessar o portal SIGAA"
                              >
                                 Portal SIGAA
+                             </a>
+                             <a 
+                                href="https://sigaa.ufpb.br/sigaa/public/curso/portal.jsf?lc=pt_BR&id=1626809" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                aria-label="Acessar o Portal do Curso"
+                             >
+                                Portal do Curso
                              </a>
                              <a 
                                 href="https://atendimento.ct.ufpb.br/index.php?a=add&catid=24" 
@@ -172,6 +218,15 @@ const App: React.FC = () => {
                                 aria-label="Acessar o SigEventos"
                              >
                                 SigEventos
+                             </a>
+                             <a 
+                                href="https://www.prape.ufpb.br/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                aria-label="Acessar o site da PRAPE"
+                             >
+                                Site da PRAPE
                              </a>
                              <a 
                                 href="https://www.ufpb.br/" 
@@ -246,7 +301,7 @@ const App: React.FC = () => {
             </header>
             
             <main className="flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-slate-50 to-blue-100 dark:from-gray-900 dark:to-blue-900/30">
-              <ChatWindow messages={messages} isLoading={isLoading} onSendMessage={handleSendMessage} onFeedback={handleFeedback} onCopy={handleCopy} onSpeak={speak} />
+              <ChatWindow messages={messages} isLoading={isLoading} onSendMessage={handleSendMessage} onFeedback={handleFeedback} onCopy={handleCopy} onSpeak={speak} onExport={handleExport} onShare={handleShare} />
               {chatError && <div className="px-6 py-2 text-center text-red-700 bg-red-100 border-t border-red-200 dark:bg-red-900/50 dark:text-red-300 dark:border-red-800">{chatError}</div>}
               <InputBar 
                   onSendMessage={handleSendMessage} 
@@ -260,6 +315,8 @@ const App: React.FC = () => {
             </main>
             {isFlowchartVisible && <FlowchartModal onClose={() => setIsFlowchartVisible(false)} />}
             {isFreshmanGuideVisible && <FreshmanGuideModal onClose={() => setIsFreshmanGuideVisible(false)} />}
+            {isCRAACalcVisible && <CRAACalculatorModal onClose={() => setIsCRAACalcVisible(false)} />}
+            {isLabsGuideVisible && <LabsGuideModal onClose={() => setIsLabsGuideVisible(false)} />}
         </div>
     );
 };

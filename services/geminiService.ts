@@ -15,6 +15,8 @@ export function createChatSession(systemInstruction: string): Chat | null {
     model: 'gemini-2.5-flash',
     config: {
       systemInstruction: systemInstruction,
+      // Otimização para baixa latência: desativa o "thinking" para respostas mais rápidas.
+      thinkingConfig: { thinkingBudget: 0 },
     },
   });
 }

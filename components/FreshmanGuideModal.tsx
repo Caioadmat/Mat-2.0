@@ -76,7 +76,7 @@ export const FreshmanGuideModal: React.FC<{ onClose: () => void }> = ({ onClose 
                     <ul>
                         <li><strong>Ative seu e-mail institucional:</strong> Você o usará para tudo na UFPB. Geralmente o acesso é liberado junto com o SIGAA.</li>
                         <li><strong>Explore o SIGAA:</strong> Este é o sistema acadêmico onde você fará sua matrícula, verá suas notas e pegará declarações. É essencial dominá-lo! <a href="https://sigaa.ufpb.br/sigaa/public/home.jsf" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 font-medium">Acesse o SIGAA aqui</a>.</li>
-                        <li><strong>Restaurante Universitário (RU):</strong> Saiba como fazer seu cadastro para ter acesso a refeições com preço subsidiado. Fique de olho nos editais da <a href="https://www.ufpb.br/prape" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 font-medium">PRAPE</a> para o auxílio alimentação.</li>
+                        <li><strong>Auxílios e Bolsas (PRAPE):</strong> A Pró-Reitoria de Assistência e Promoção ao Estudante (PRAPE) é o órgão que cuida dos auxílios para os estudantes (moradia, alimentação/RU, transporte, etc.). Fique sempre de olho nos editais publicados no site deles para não perder os prazos! <a href="https://www.prape.ufpb.br/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 font-medium">Acesse o site da PRAPE</a>.</li>
                     </ul>
                 </AccordionItem>
                 <AccordionItem title="Conhecendo o Curso" icon={<AcademicCapIcon />}>

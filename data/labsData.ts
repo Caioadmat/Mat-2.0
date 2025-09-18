@@ -1,0 +1,88 @@
+import type { Lab } from '../types';
+
+export const labsData: Lab[] = [
+  {
+    id: 'caracterizacao-microestrutura',
+    name: 'Laboratório de Caracterização Microestrutura',
+    professors: ['Prof. Antônio Farias Leal'],
+    description: 'Focado na análise detalhada da microestrutura de materiais, utilizando técnicas avançadas de microscopia para correlacionar a estrutura com as propriedades.',
+    researchLines: ['Microscopia Eletrônica de Varredura (MEV)', 'Análise de Textura e Orientação Cristalina', 'Metalografia Quantitativa'],
+  },
+  {
+    id: 'cristalografia',
+    name: 'Laboratório de Cristalografia',
+    professors: ['Prof. Daniel Araújo de Macedo'],
+    description: 'Dedicado ao estudo da estrutura cristalina dos materiais através de técnicas de difração de raios-X, essencial para a identificação de fases e determinação de parâmetros de rede.',
+    researchLines: ['Difração de Raios-X (DRX)', 'Análise de Tensão Residual', 'Refinamento Rietveld'],
+  },
+  {
+    id: 'materiais-avancados',
+    name: 'Laboratório de Materiais Avançados',
+    professors: ['Prof. Ramon Alves Torquato'],
+    description: 'Pesquisa e desenvolvimento de materiais com propriedades inovadoras e aplicações de alta tecnologia, como superligas, compósitos de matriz metálica e materiais nanoestruturados.',
+    researchLines: ['Materiais Nanoestruturados', 'Ligas com Memória de Forma', 'Compósitos Avançados'],
+  },
+  {
+    id: 'materiais-ceramicos',
+    name: 'Laboratório de Materiais Cerâmicos',
+    professors: ['Profa. Liszandra Fernanda Araújo Campos'],
+    description: 'Atua no processamento e caracterização de materiais cerâmicos, desde os tradicionais, como argilas, até cerâmicas avançadas para aplicações estruturais e eletrônicas.',
+    researchLines: ['Sinterização', 'Biocerâmicas', 'Materiais Refratários', 'Processamento de Pós'],
+  },
+  {
+    id: 'materiais-biossistemas',
+    name: 'Laboratório de Materiais e Biossistemas',
+    professors: ['Prof. Eliton Souto de Medeiros'],
+    description: 'Interface entre ciência dos materiais e biologia, focando no desenvolvimento de biomateriais, materiais bioinspirados e estudo da interação de materiais com sistemas biológicos.',
+    researchLines: ['Biomateriais Poliméricos', 'Engenharia de Tecidos', 'Sistemas de Liberação de Fármacos'],
+  },
+  {
+    id: 'materiais-metalicos',
+    name: 'Laboratório de Materiais Metálicos',
+    professors: ['Prof. Ieverton Caiandre Andrade Brito'],
+    description: 'Estudo de ligas metálicas, suas propriedades, processamento e aplicações. Foco em metalurgia física, tratamentos térmicos e conformação mecânica.',
+    researchLines: ['Metalurgia Física', 'Tratamentos Térmicos', 'Solidificação de Metais', 'Análise de Falhas'],
+  },
+  {
+    id: 'materiais-polimericos',
+    name: 'Laboratório de Materiais Poliméricos',
+    professors: ['Profa. Lucineide Balbino da Silva'],
+    description: 'Focado no processamento, caracterização e aplicação de polímeros. A pesquisa abrange desde plásticos de commodities até polímeros de engenharia e blenda poliméricas.',
+    researchLines: ['Processamento de Termoplásticos', 'Blendas e Compósitos Poliméricos', 'Reciclagem de Polímeros'],
+  },
+  {
+    id: 'modelagem-materiais',
+    name: 'Laboratório de Modelagem de Materiais',
+    professors: ['Profa. Renate Maria Ramos Wellen'],
+    description: 'Utiliza ferramentas computacionais e simulação para prever o comportamento e as propriedades dos materiais em diferentes escalas, otimizando processos e o desenvolvimento de novos materiais.',
+    researchLines: ['Simulação por Elementos Finitos', 'Dinâmica Molecular', 'Modelagem Termodinâmica (CALPHAD)'],
+  },
+  {
+    id: 'propriedades-mecanicas',
+    name: 'Laboratório de Propriedades Mecânicas dos Materiais',
+    professors: ['Profa. Danielle Guedes de Lima Cavalcante'],
+    description: 'Realiza ensaios para determinar a resposta dos materiais a esforços mecânicos, como tração, compressão, fadiga e impacto, sendo crucial para a seleção de materiais em engenharia.',
+    researchLines: ['Ensaio de Tração e Compressão', 'Análise de Fadiga e Fratura', 'Ensaios de Dureza e Microdureza'],
+  },
+  {
+    id: 'purificacao-minerais',
+    name: 'Laboratório de Purificação e Aspersão de Minerais Argilosos',
+    professors: ['Prof. Heber Sivini Ferreira'],
+    description: 'Especializado no beneficiamento e tratamento de argilominerais para aplicações industriais, incluindo processos de purificação, concentração e modificação de superfícies.',
+    researchLines: ['Beneficiamento de Argilas', 'Caracterização de Argilominerais', 'Spray Drying'],
+  },
+  {
+    id: 'quimica-materiais',
+    name: 'Laboratório de Química dos Materiais',
+    professors: ['Profa. Itamara Farias Leite'],
+    description: 'Focado na síntese e modificação química de materiais, desenvolvendo novas rotas sintéticas para a obtenção de materiais com funcionalidades específicas.',
+    researchLines: ['Síntese de Polímeros', 'Química de Sol-Gel', 'Materiais Híbridos Orgânico-Inorgânicos'],
+  },
+  {
+    id: 'siderurgia',
+    name: 'Laboratório de Siderurgia',
+    professors: ['Prof. Cláudio Alves de Siqueira Filho'],
+    description: 'Estudo dos processos envolvidos na produção de ferro e aço, desde a preparação da matéria-prima até a solidificação e laminação, focando em otimização de processos e qualidade do produto.',
+    researchLines: ['Redução de Minério de Ferro', 'Refino de Aço', 'Solidificação e Laminação'],
+  },
+];
