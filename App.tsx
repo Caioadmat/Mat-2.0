@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MAT_PERSONA } from './constants';
 import { ChatWindow } from './components/ChatWindow';
@@ -200,6 +201,15 @@ const App: React.FC = () => {
                                 aria-label="Acessar o Portal do Curso"
                              >
                                 Portal do Curso
+                             </a>
+                              <a 
+                                href="https://sigaa.ufpb.br/sigaa/public/departamento/portal.jsf?id=1575"
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                aria-label="Acessar o Portal do Departamento (SIGAA)"
+                             >
+                                Portal do Departamento (SIGAA)
                              </a>
                              <a 
                                 href="https://atendimento.ct.ufpb.br/index.php?a=add&catid=24" 

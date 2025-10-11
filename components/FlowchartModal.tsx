@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { flowchartData, optionalDisciplines, Discipline } from '../data/flowchartData';
-import { XIcon, LinkIcon, CheckCircleIcon, ClockIcon, RefreshIcon, ClipboardListIcon, ExclamationTriangleIcon } from './Icon';
+import { XIcon, LinkIcon, CheckCircleIcon, ClockIcon, RefreshIcon, ClipboardListIcon, ExclamationTriangleIcon, PlusIcon, TrashIcon } from './Icon';
 
 type DisciplineStatus = 'completed' | 'in_progress' | 'pending';
 
@@ -70,7 +70,16 @@ const DisciplineCell: React.FC<DisciplineCellProps> = ({ discipline, status, onC
   );
 };
 
-const DisciplineDetails: React.FC<{ discipline: Discipline; status?: DisciplineStatus; onStatusChange: (status: DisciplineStatus) => void; onClose: () => void; onHover: (code: string | null) => void; }> = ({ discipline, status, onStatusChange, onClose, onHover }) => {
+const DisciplineDetails: React.FC<{ 
+    discipline: Discipline; 
+    status?: DisciplineStatus; 
+    onStatusChange: (status: DisciplineStatus) => void; 
+    onClose: () => void; 
+    onHover: (code: string | null) => void;
+    isPlanningMode: boolean;
+    isPlanned: boolean;
+    onTogglePlan: (code: string) => void;
+}> = ({ discipline, status, onStatusChange, onClose, onHover, isPlanningMode, isPlanned, onTogglePlan }) => {
     const statusButtonStyle = (s: DisciplineStatus) => {
         const base = "px-3 py-1.5 text-sm font-semibold rounded-md transition-colors w-full";
         if (s === status) {
@@ -101,6 +110,30 @@ const DisciplineDetails: React.FC<{ discipline: Discipline; status?: DisciplineS
                         <button className={statusButtonStyle('pending')} onClick={() => onStatusChange('pending')}>⚪ Pendente</button>
                     </div>
                 </div>
+
+                {isPlanningMode && (
+                    <div>
+                        <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">Planejamento</h5>
+                        <button
+                            onClick={() => onTogglePlan(discipline.code)}
+                            className={`w-full px-3 py-2 text-sm font-semibold rounded-md transition-colors flex items-center justify-center gap-2 ${
+                                isPlanned
+                                ? 'bg-orange-500 text-white hover:bg-orange-600'
+                                : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
+                            }`}
+                        >
+                            {isPlanned ? (
+                                <>
+                                    <TrashIcon className="w-4 h-4" /> Remover do Plano
+                                </>
+                            ) : (
+                                <>
+                                    <PlusIcon className="w-4 h-4" /> Adicionar ao Plano
+                                </>
+                            )}
+                        </button>
+                    </div>
+                )}
 
                 <div>
                     <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">Pré-requisitos</h5>
@@ -201,21 +234,44 @@ export const FlowchartModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
   };
   
   const handleDisciplineClick = (discipline: Discipline) => {
-    if (isPlanningMode) {
-      setPlannedDisciplines(prev => {
-        const newSet = new Set(prev);
-        if (newSet.has(discipline.code)) {
-          newSet.delete(discipline.code);
-        } else {
-          newSet.add(discipline.code);
-        }
-        return newSet;
+    // When NOT in planning mode, a direct click cycles through statuses for quick updates.
+    if (!isPlanningMode) {
+      const currentStatus = statuses[discipline.code] || 'pending';
+      const nextStatusMap: Record<DisciplineStatus, DisciplineStatus> = {
+          'pending': 'completed',
+          'completed': 'in_progress',
+          'in_progress': 'pending',
+      };
+      const nextStatus = nextStatusMap[currentStatus];
+      
+      setStatuses(prev => {
+          const newStatuses = { ...prev };
+          if (nextStatus === 'pending') {
+              delete newStatuses[discipline.code];
+          } else {
+              newStatuses[discipline.code] = nextStatus;
+          }
+          return newStatuses;
       });
-    } else {
-      setSelectedDiscipline(discipline);
     }
+    
+    // In both modes, open the details pane. In planning mode, this is the primary action.
+    // In non-planning mode, it complements the status cycle by showing more details.
+    setSelectedDiscipline(discipline);
   };
   
+  const handleTogglePlan = (code: string) => {
+    setPlannedDisciplines(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(code)) {
+        newSet.delete(code);
+      } else {
+        newSet.add(code);
+      }
+      return newSet;
+    });
+  };
+
   const planningSummary = useMemo(() => {
     if (!isPlanningMode) return null;
 
@@ -343,7 +399,7 @@ export const FlowchartModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                  </div>
               </div>
             </main>
-            {selectedDiscipline && !isPlanningMode && (
+            {selectedDiscipline && (
                 <DisciplineDetails 
                     discipline={selectedDiscipline} 
                     status={statuses[selectedDiscipline.code] || 'pending'}
@@ -360,6 +416,9 @@ export const FlowchartModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     }}
                     onClose={() => setSelectedDiscipline(null)} 
                     onHover={setHoveredDisciplineCode}
+                    isPlanningMode={isPlanningMode}
+                    isPlanned={plannedDisciplines.has(selectedDiscipline.code)}
+                    onTogglePlan={handleTogglePlan}
                 />
             )}
         </div>
